@@ -20,5 +20,6 @@ class Employee extends Model
 		'job',
 		'job_description',
 		'location',
+		'affiliate',
     ];
 }

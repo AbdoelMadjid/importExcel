@@ -56,6 +56,7 @@ class EmployeeController extends Controller
             'job'=>['required','string'],
             'job_description'=>['required','string'],
             'location'=>['required','string'],
+            'affiliate'=>['required','boolean'],
             
         ]);
 
@@ -73,6 +74,7 @@ class EmployeeController extends Controller
             'job'=>$request->input('job_description'),
             'job_description'=>$request->input('job_description'),
             'location'=>$request->input('location'),
+            'affiliate'=>$request->input('affiliate'),
         ]);
 
         return redirect()->route('employee.index')->with('success','Creado con Exito!');
@@ -130,6 +132,7 @@ class EmployeeController extends Controller
             'job'=>['required','string'],
             'job_description'=>['required','string'],
             'location'=>['required','string'],
+            'affiliate'=>['required','boolean'],
             
         ]);
 
@@ -147,6 +150,7 @@ class EmployeeController extends Controller
             'job'=>$request->input('job_description'),
             'job_description'=>$request->input('job_description'),
             'location'=>$request->input('location'),
+            'affiliate'=>$request->input('affiliate'),
         ]);
 
         return back()->with('success','Editado con Exito!');

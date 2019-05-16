@@ -12,33 +12,48 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home');
 });
 
 Auth::routes();
 
+Route::get('register',function(){
+
+    return redirect()->route('login');
+
+})->name('register');
+
+Route::post('register',function(){
+
+    return abort(403);
+
+})->name('register');
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+Route::group(['middleware' => ['auth']], function () {
 
-Route::group(['middleware' => ['role:Administrator']], function () {
-    
-    Route::resource('administracion-de-usuarios','UserAdministrator')->names([
-    	'index'=>'user.administrator.index',
-    	'edit'=>'user.administrator.edit',
-    	'create'=>'user.administrator.create',
-    	'store'=>'user.administrator.store',
-    	'update'=>'user.administrator.update',
-    	'destroy'=>'user.administrator.destroy',
-    ]);
+    Route::group(['middleware' => ['role:Administrator']], function () {
+        
+        Route::resource('administracion-de-usuarios','UserAdministrator')->names([
+        	'index'=>'user.administrator.index',
+        	'edit'=>'user.administrator.edit',
+        	'create'=>'user.administrator.create',
+        	'store'=>'user.administrator.store',
+        	'update'=>'user.administrator.update',
+        	'destroy'=>'user.administrator.destroy',
+        ]);
 
-    Route::resource('administracion-de-empleados','EmployeeController')->names([
-    	'index'=>'employee.index',
-    	'edit'=>'employee.edit',
-    	'create'=>'employee.create',
-    	'store'=>'employee.store',
-    	'update'=>'employee.update',
-    	'destroy'=>'employee.destroy',
-    ]);
+        Route::resource('administracion-de-empleados','EmployeeController')->names([
+        	'index'=>'employee.index',
+        	'edit'=>'employee.edit',
+        	'create'=>'employee.create',
+        	'store'=>'employee.store',
+        	'update'=>'employee.update',
+        	'destroy'=>'employee.destroy',
+        ]);
+
+    });
 
 });

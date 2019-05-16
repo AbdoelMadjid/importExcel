@@ -255,6 +255,24 @@
 
                 </div>
 
+                <div class="col-md-6">
+                  <label>Afiliado:</label>
+
+                  <select id="affiliate" class="form-control" name="affiliate">
+                    <option value="1">Si</option>
+                    <option value="0">No</option>
+                  </select>
+
+                  @error('affiliate')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
               </div>
 
               <div style="margin-top: 10px;">
@@ -281,6 +299,8 @@
       
 
       $('#sex').val('{{ $employee->sex }}');
+      
+      $('#affiliate').val('{{ $employee->affiliate }}');
 
   </script>
 
