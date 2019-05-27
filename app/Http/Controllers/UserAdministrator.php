@@ -81,7 +81,7 @@ class UserAdministrator extends Controller
      */
     public function edit($id)
     {
-        $user = User::where('id',$id)->first();
+        $user = User::withTrashed()->where('id',$id)->first();
 
         return view('user_administration.edit',[
             'user'=>$user,
@@ -103,7 +103,7 @@ class UserAdministrator extends Controller
             'password' => ['string', 'min:8','nullable'],
         ]);
 
-        $user = User::where('id',$id)->first();
+        $user = User::withTrashed()->where('id',$id)->first();
 
         if (!$user) {
 
