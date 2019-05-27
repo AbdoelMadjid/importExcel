@@ -22,6 +22,12 @@ class DatabaseSeeder extends Seeder
         
         $role = Role::create(['name' => 'User']);
 
+        $permission = Permission::create(['name' => 'edit']);
+        $permission = Permission::create(['name' => 'create']);
+        $permission = Permission::create(['name' => 'delete']);
+        $permission = Permission::create(['name' => 'read']);
+
+
         $admin = User::create([
             'name' => 'Administrator',
             'email' => 'admin@admin.com',
@@ -37,10 +43,12 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole('Administrator');
         
         $user->assignRole('User');
-		
-		
-		$permission = Permission::create(['name' => 'edit articles']);
 
+        $admin->givePermissionTo('read' ,'edit', 'delete','create','delete');
+        
+        $user->givePermissionTo('read' ,'edit', 'delete','create','delete');
+		
+	
         Excel::import(new ExcelMysqlImport, 'demo.csv','local');
     }
 }

@@ -45,15 +45,22 @@ Route::group(['middleware' => ['auth']], function () {
         	'destroy'=>'user.administrator.destroy',
         ]);
 
-        Route::resource('administracion-de-empleados','EmployeeController')->names([
-        	'index'=>'employee.index',
-        	'edit'=>'employee.edit',
-        	'create'=>'employee.create',
-        	'store'=>'employee.store',
-        	'update'=>'employee.update',
-        	'destroy'=>'employee.destroy',
-        ]);
+        Route::get('administracion-de-usuarios/{id}/restore','UserAdministrator@restore')->name('user.administrator.restore');
+
+        Route::get('administracion/permisos/{id}/{permiso}/agregar','UserAdministrator@addPermission')->name('add.permission');
+
+        Route::get('administracion/permisos/{id}/{permiso}/eliminar','UserAdministrator@deletePermission')->name('delete.permission');
 
     });
+
+    Route::resource('administracion-de-empleados','EmployeeController')->names([
+            'index'=>'employee.index',
+            'show'=>'employee.show',
+            'edit'=>'employee.edit',
+            'create'=>'employee.create',
+            'store'=>'employee.store',
+            'update'=>'employee.update',
+            'destroy'=>'employee.destroy',
+        ]);
 
 });

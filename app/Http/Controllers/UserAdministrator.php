@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\User;
+
 
 class UserAdministrator extends Controller
 {
@@ -15,7 +17,10 @@ class UserAdministrator extends Controller
      */
     public function index()
     {
-        $users = User::where('id','<>',auth()->id())->get();
+        $users = User::withTrashed()->where('id','<>',auth()->id())->get();
+
+
+        //dd($users);
 
         return view('user_administration.index',[
             'users'=>$users,
@@ -136,6 +141,42 @@ class UserAdministrator extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::where('id',$id)->delete();
+
+        return back();
+    }
+
+    public function addPermission($id, $permission)
+    {
+        $user = User::where('id',$id)->first();
+
+        if (!$user) {
+            return abort(404);
+        }
+
+        $user->givePermissionTo($permission);
+
+        return back()->with('success','permiso agregado exitosamente');
+
+    }
+
+    public function deletePermission($id, $permission)
+    {
+        $user = User::where('id',$id)->first();
+
+        if (!$user) {
+            return abort(404);
+        }
+
+        $user->revokePermissionTo($permission);
+
+        return back()->with('success','permiso eliminado exitosamente');
+    }
+
+    public function restore($id)
+    {
+        User::where('id',$id)->restore();
+
+        return back();
     }
 }

@@ -2,11 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\EmailEmployee;
 use App\Employee;
+use App\Phone;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('permission:read', ['only' => ['show']]);
+        $this->middleware('permission:edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:create', ['only' => ['create','store']]);
+        $this->middleware('permission:delete', ['only' => ['destroy']]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +34,7 @@ class EmployeeController extends Controller
     {
         $employees = Employee::all();
 
-        //dd($employees);
+        //dd(Carbon::parse($employees->first()->birthday)->age);
 
         return view('employee.index',[
             'employees'=>$employees,
@@ -41,6 +59,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {   
+        
 
         $request->validate([
             'cedula'=>['numeric','required','unique:employees,cedula'],
@@ -57,10 +76,14 @@ class EmployeeController extends Controller
             'job_description'=>['required','string'],
             'location'=>['required','string'],
             'affiliate'=>['required','boolean'],
+            'date-desaffiliated'=>['nullable','date'],
+            'date-affiliated'=>['nullable','date'],
+            'email'=>['array'],
+            'phone'=>['array'],
             
         ]);
 
-        Employee::create([
+        $employee = Employee::create([
             'cedula'=>$request->input('cedula'),
             'name'=>$request->input('name'),
             'sex'=>$request->input('sex'),
@@ -74,8 +97,28 @@ class EmployeeController extends Controller
             'job'=>$request->input('job_description'),
             'job_description'=>$request->input('job_description'),
             'location'=>$request->input('location'),
-            'affiliate'=>$request->input('affiliate'),
+            'affiliated'=>$request->input('affiliate'),
         ]);
+
+        foreach ($request->input('email') as $email) {
+            
+            EmailEmployee::create([
+                'employee_id'=>$employee->id,
+                'email'=>$email
+            ]);
+
+        }
+
+        foreach ($request->input('phone') as $phone) {
+            
+            Phone::create([
+                'employee_id'=>$employee->id,
+                'code'=>null,
+                'phone'=>$phone,
+            ]);
+
+        }
+            
 
         return redirect()->route('employee.index')->with('success','Creado con Exito!');
 
@@ -87,9 +130,13 @@ class EmployeeController extends Controller
      * @param  \App\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function show(Employee $employee)
+    public function show($id)
     {
-        //
+        $employee = Employee::with(['emails','phones'])->where('id',$id)->first();
+        
+        return view('employee.show',[
+            'employee'=>$employee,
+        ]);
     }
 
     /**
@@ -100,9 +147,9 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = Employee::where('id',$id)->first();
+        $employee = Employee::with(['emails','phones'])->withCount(['emails','phones'])->where('id',$id)->first();
 
-        //dd($employee->sex);
+        //dd($employee);
 
         return view('employee.edit',[
             'employee' => $employee,
@@ -133,10 +180,17 @@ class EmployeeController extends Controller
             'job_description'=>['required','string'],
             'location'=>['required','string'],
             'affiliate'=>['required','boolean'],
+            'date-desaffiliated'=>['nullable','date'],
+            'date-affiliated'=>['nullable','date'],
+            'email'=>['array'],
+            'email.*'=>['string', 'email', 'max:255', 'unique:email_employees,email'],
+            'phone'=>['array'],
             
         ]);
 
-        Employee::where('id',$id)->update([
+        $employee = Employee::where('id',$id)->first();
+
+        $employee->update([
             'cedula'=>$request->input('cedula'),
             'name'=>$request->input('name'),
             'sex'=>$request->input('sex'),
@@ -150,8 +204,33 @@ class EmployeeController extends Controller
             'job'=>$request->input('job_description'),
             'job_description'=>$request->input('job_description'),
             'location'=>$request->input('location'),
-            'affiliate'=>$request->input('affiliate'),
+            'affiliated'=>$request->input('affiliate'),
+            'disaffiliated_date'=>$request->input('date-desaffiliated'),
+            'affiliated_date'=>$request->input('date-affiliated'),
         ]);
+
+        EmailEmployee::where('employee_id',$id)->delete();
+        
+        Phone::where('employee_id',$id)->delete();
+
+        foreach ($request->input('email') as $email) {
+            
+            EmailEmployee::create([
+                'employee_id'=>$employee->id,
+                'email'=>$email
+            ]);
+
+        }
+
+        foreach ($request->input('phone') as $phone) {
+            
+            Phone::create([
+                'employee_id'=>$employee->id,
+                'code'=>null,
+                'phone'=>$phone,
+            ]);
+
+        }
 
         return back()->with('success','Editado con Exito!');
     }
@@ -162,8 +241,10 @@ class EmployeeController extends Controller
      * @param  \App\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
-        //
+        Employee::where('id',$id)->delete();
+
+        return back()->with('success','Eliminado Exitosamente');
     }
 }

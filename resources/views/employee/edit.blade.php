@@ -275,6 +275,151 @@
 
               </div>
 
+
+              <div class="row">
+                
+                <div class="col-md-6">
+                  
+                  <label>Correo:</label>
+
+                  <div class="field-wrapper-mail">
+                    
+                    <input class="form-control" type="email" name="email[]" required value="{{ isset($employee->emails->first()->email) ? $employee->emails->first()->email : ""}}">
+
+                    @forelse($employee->emails as $key => $email)
+
+                      @if($key > 0)
+
+                        <div style="margin-top:10px;" class="email-{{ $key + 1 }}">
+
+                          <input class="form-control" type="email" name="phone[]" required placeholder="Correo" value="{{ $email->email }}" required>
+                        
+                        </div>
+
+                      @endif
+
+                    @empty
+
+                    @endforelse
+
+
+                  </div>
+
+                  <button class="add-button-mail btn btn-success" type="button" style="margin-top: 10px;">Añadir Email</button>
+                  
+                  <button class="delete-button-mail btn btn-danger" type="button" style="margin-top: 10px;">Eliminar Email</button>
+
+                  @error('email')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                  @error('email.*')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror                  
+
+                </div>
+
+                <div class="col-md-6">
+                  
+                  <label>Telefono:</label>
+
+                  <div class="field-wrapper">
+                    
+                    
+                      
+                    <input class="form-control" type="text" name="phone[]" required placeholder="telefono" value="{{ isset($employee->phones->first()->phone) ? $employee->phones->first()->phone : ""}}">
+
+
+                    @forelse($employee->phones as $key => $phone)
+
+                      @if($key > 0)
+
+                        <div style="margin-top:10px;" class="phone-{{ $key + 1 }}">
+
+                          <input class="form-control" type="text" name="phone[]" required placeholder="telefono" value="{{ $phone->phone }}">
+                        
+                        </div>
+
+                      @endif
+
+                    @empty
+
+                    @endforelse
+
+
+                    
+                    
+                  
+                  </div>
+
+
+                  <button class="add-button btn btn-success" type="button" style="margin-top: 10px;">Añadir telefono</button>
+                  
+                  <button class="delete-button btn btn-danger" type="button" style="margin-top: 10px;">Eliminar telefono</button>
+
+                  @error('phone')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                  @error('phone.*')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+                                  
+              </div>
+
+
+              <div class="row" style="margin-top: 10px;">
+                
+                <div class="col-md-6">
+                  <label>Fecha de afiliacion:</label>
+
+                  <input class="form-control" type="date" name="date-affiliated" value="{{ $employee->affiliated_date ? $employee->affiliated_date : old('date-affiliated') }}">
+
+                  @error('date-affiliated')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+                <div class="col-md-6">
+                  <label>Fecha de Desafiliacion:</label>
+
+                  <input class="form-control" type="date" name="date-desaffiliated" value="{{ $employee->disaffiliated_date ? $employee->disaffiliated_date : old('date-desaffiliated') }}">
+
+                  @error('date-desaffiliated')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+              </div>
+
               <div style="margin-top: 10px;">
               
                 <button class="btn btn-success"> Guardar </button>
@@ -300,7 +445,108 @@
 
       $('#sex').val('{{ $employee->sex }}');
       
-      $('#affiliate').val('{{ $employee->affiliate }}');
+      $('#affiliate').val('{{ $employee->affiliated }}');
+
+
+      $(document).ready(function(){
+
+    var maxField = 5; //Input fields increment limitation
+    var addButton = $('.add-button'); //Add button selector
+    var deleteButton = $('.delete-button'); //Add button selector
+    var wrapper = $('.field-wrapper'); //Input field wrapper
+    var x = {{ $employee->phones_count }}; //Initial field counter is 1
+   
+   $(deleteButton).click(function(){
+      if(x > 1)
+      {
+        $('.phone-'+x).remove();
+        x--;    
+      }
+   });
+
+    //Once add button is clicked
+    $(addButton).click(function(){
+        //Check maximum number of input fields
+        if(x < maxField){ 
+            x++; //Increment field counter
+
+      var fieldHTML = '<div style="margin-top:10px;" class="phone-'+x+'">\
+                      \
+                      \
+                      <input class="form-control" type="text" name="phone[]" required placeholder="telefono">\
+                      \
+                    </div>\
+                    ';
+            
+//            <span class='input-group-append'>\
+//              <button class='btn btn-light remove-button' type='button'>Eliminar tel.</button>\
+//            </span>\
+    
+            $(wrapper).append(fieldHTML); //Add field html
+
+            $('.select-search').select2({
+              templateResult: iconFormat,
+              minimumResultsForSearch: Infinity,
+              templateSelection: iconFormat,
+              escapeMarkup: function(m) { return m; }
+          });
+        }
+    });
+    
+    //Once remove button is clicked
+    //$(wrapper).on('click', '.remove-button', function(e){
+    //    e.preventDefault();
+    //    $(this).parent('div').remove(); //Remove field html
+    //    x--; //Decrement field counter
+    //});
+});
+
+$(document).ready(function(){
+
+    var maxField = 5; //Input fields increment limitation
+    var addButton = $('.add-button-mail'); //Add button selector
+    var deleteButton = $('.delete-button-mail'); //Add button selector
+    var wrapper = $('.field-wrapper-mail'); //Input field wrapper
+    var x = {{ $employee->emails_count }}; //Initial field counter is 1
+   
+   $(deleteButton).click(function(){
+      if(x > 1)
+      {
+        $('.email-'+x).remove();
+        x--;    
+      }
+   });
+
+    //Once add button is clicked
+    $(addButton).click(function(){
+        //Check maximum number of input fields
+        if(x < maxField){ 
+            x++; //Increment field counter
+
+      var fieldHTML = '<input style="margin-top:10px;" class="form-control email-'+x+'" type="email" name="email[]" required>';
+            
+//            <span class='input-group-append'>\
+//              <button class='btn btn-light remove-button' type='button'>Eliminar tel.</button>\
+//            </span>\
+    
+            $(wrapper).append(fieldHTML); //Add field html
+
+            $('.select-search').select2({
+              templateResult: iconFormat,
+              minimumResultsForSearch: Infinity,
+              templateSelection: iconFormat,
+              escapeMarkup: function(m) { return m; }
+          });
+        }
+    });
+    
+    //Once remove button is clicked
+    //$(wrapper).on('click', '.remove-button', function(e){
+    //    e.preventDefault();
+    //    $(this).parent('div').remove(); //Remove field html
+    //    x--; //Decrement field counter
+    //});
+});
 
   </script>
 

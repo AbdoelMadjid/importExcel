@@ -2,10 +2,10 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\EmailEmployee;
+use App\Phone;
 use Faker\Generator as Faker;
 
-$factory->define(EmailEmployee::class, function (Faker $faker) {
+$factory->define(Phone::class, function (Faker $faker) {
     return [
         //
     ];

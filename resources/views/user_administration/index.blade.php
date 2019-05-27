@@ -1,6 +1,12 @@
 @extends('layouts.app')
 @section('content')
 
+      @if(session()->has('success'))
+          <div class="alert alert-success">
+              {{ session()->get('success') }}
+          </div>
+      @endif
+
 <!-- /.row -->
       <div class="row">
         <div class="col-xs-12">
@@ -26,6 +32,8 @@
                   <th>Nombre</th>
                   <th>Email</th>
                   <th>Opciones</th>
+                  <th></th>
+                  <th>Permisos</th>
                 </tr>
                 @forelse($users as $user)
 
@@ -34,7 +42,48 @@
 	                  <td>{{ $user->name }}</td>
 	                  <td>{{ $user->email }}</td>
 	                  <td><a class="btn btn-primary" href="{{ route('user.administrator.edit',$user->id) }}"> <span class="fa fa-pencil"></span> </a></td>
-	                  <td><a class="btn btn-danger" href="#"> <span class="fa fa-trash"></span></td>
+	                  
+                    @if(is_null($user->deleted_at))
+                    <td>
+                    <form action="{{ route('user.administrator.destroy',$user->id) }}" method="POST">
+                      @csrf
+                      @method('DELETE')
+
+
+                      <button class="btn btn-danger" type="submit"> <span class="fa fa-trash"></span></button>
+                    
+                    </form>
+                    
+                    </td>
+                    @else
+
+
+                    <td><a class="btn btn-success" href="{{ route('user.administrator.restore',$user->id) }}"> <span class="fa fa-recycle"></span></td>
+
+                    @endif
+                    
+
+                    @if($user->hasPermissionTo('create'))
+                      <td><a class="btn btn-danger" href="{{ route('delete.permission',[$user->id,'create']) }}"> <span class="fa fa-plus"></span></td>
+                    @else
+                      <td><a class="btn btn-success" href="{{ route('add.permission',[$user->id,'create']) }}"> <span class="fa fa-plus"></span></td>
+                    @endif
+
+
+                    @if($user->hasPermissionTo('edit'))
+                      <td><a class="btn btn-danger" href="{{ route('delete.permission',[$user->id,'edit']) }}"> <span class="fa fa-pencil"></span></td>
+                    @else
+                      
+                      <td><a class="btn btn-success" href="{{ route('add.permission',[$user->id,'edit']) }}"> <span class="fa fa-pencil"></span></td>
+                    @endif
+
+
+                    @if($user->hasPermissionTo('delete'))
+                      <td><a class="btn btn-danger" href="{{ route('delete.permission',[$user->id,'delete']) }}"> <span class="fa fa-trash"></span></td>
+                    @else
+                      <td><a class="btn btn-success" href="{{ route('add.permission',[$user->id,'delete']) }}"> <span class="fa fa-trash"></span></td>
+                    @endif                    
+                    
 	                </tr>
 
                 @empty

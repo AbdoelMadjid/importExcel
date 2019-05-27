@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Employee extends Model
 {
+	use SoftDeletes;
+
     protected $fillable = [
 	    'cedula',
 	    'name',
@@ -20,6 +24,23 @@ class Employee extends Model
 		'job',
 		'job_description',
 		'location',
-		'affiliate',
+		'affiliated',
+		'affiliated_date',
+		'disaffiliated_date',
+		'description',
     ];
+
+    public function emails()
+    {
+
+    	return $this->hasMany(EmailEmployee::class);
+
+    }
+
+    public function phones()
+    {
+
+    	return $this->hasMany(Phone::class);
+
+    }
 }

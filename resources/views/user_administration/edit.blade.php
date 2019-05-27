@@ -71,13 +71,6 @@
 
                 </div>
 
-                <div class="col-md-6">
-
-                  <label>Rol:</label>
-                  
-                  <input class="form-control" value="Rol" disabled>
-
-                </div>
 
               </div>
 

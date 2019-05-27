@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\EmailEmployee;
+use App\Phone;
 use Illuminate\Http\Request;
 
-class EmailEmployeeController extends Controller
+class PhoneController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class EmailEmployeeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\EmailEmployee  $emailEmployee
+     * @param  \App\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function show(EmailEmployee $emailEmployee)
+    public function show(Phone $phone)
     {
         //
     }
@@ -52,10 +52,10 @@ class EmailEmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\EmailEmployee  $emailEmployee
+     * @param  \App\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function edit(EmailEmployee $emailEmployee)
+    public function edit(Phone $phone)
     {
         //
     }
@@ -64,10 +64,10 @@ class EmailEmployeeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\EmailEmployee  $emailEmployee
+     * @param  \App\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EmailEmployee $emailEmployee)
+    public function update(Request $request, Phone $phone)
     {
         //
     }
@@ -75,10 +75,10 @@ class EmailEmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\EmailEmployee  $emailEmployee
+     * @param  \App\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EmailEmployee $emailEmployee)
+    public function destroy(Phone $phone)
     {
         //
     }

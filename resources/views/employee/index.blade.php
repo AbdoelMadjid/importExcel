@@ -20,6 +20,7 @@
                   <th>Fecha de Admision</th>
                   <th>Antiguedad</th>
                   <th>Cumpleaños</th>
+                  <th>Edad</th>
                   <th>Sexo</th>
                   <th>Tipo</th>
                   <th>Costo-Descripcion</th>
@@ -40,6 +41,7 @@
                     <td>{{ $employee->date_admission }}</td>
                     <td>{{ date('Y') - date('Y',strtotime($employee->date_admission)) }}</td>
                     <td>{{ $employee->birthday }}</td>
+                    <td> {{ Carbon\Carbon::parse($employee->birthday)->age }} </td>
                     <td>{{ $employee->sex == true ? "M" : "F" }}</td>
                     <td>{{ $employee->type }}</td>                    
                     <td>{{ $employee->cost_description }}</td>
@@ -47,7 +49,7 @@
                     <td>{{ $employee->location }}</td>
                     <td>{{ $employee->affiliate == true ? 'Si' : 'No' }}</td>
                     <td>
-                      <a class="btn btn-success" href="{{ route('employee.edit',$employee->id) }}"> 
+                      <a class="btn btn-success" href="{{ route('employee.show',$employee->id) }}"> 
                         <span class="fa fa-eye"></span> 
                       </a>
                     </td>
@@ -58,13 +60,45 @@
                     </td>
                     
                     <td>
-                      <a class="btn btn-danger" href="#"> 
+                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger-{{ $employee->id }}">
                         <span class="fa fa-trash"></span>
-                      </a>
+                      </button>                      
                     </td>
 
                   </tr>
 
+                   <!-- modal -->
+
+
+                  <div class="modal modal-danger fade" id="modal-danger-{{ $employee->id }}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title">¡Alerta!</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Esta seguro de que desea eliminar el registro de {{ $employee->name }}?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Cancelar</button>
+
+                          <form id="delete-form-{{$employee->id}}" action="{{ route('employee.destroy',$employee->id) }}" method="POST">
+                            <button type="submit" class="btn btn-outline" onclick="event.preventDefault();
+                            document.getElementById('delete-form-{{$employee->id}}').submit();">Eliminar</button>
+                         
+                          @csrf
+                          @method('DELETE')
+                         
+                         </form>
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->
                 @empty
                   <tr>                    
                     <td>Sin Empleados</td>

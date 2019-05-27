@@ -29,9 +29,13 @@ class CreateEmployeesTable extends Migration
             $table->string('job');
             $table->string('job_description');
             $table->string('location');
+            $table->date('affiliated_date')->nullable();
+            $table->date('disaffiliated_date')->nullable();
+            $table->string('description')->nullable();
 
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
