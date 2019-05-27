@@ -34,30 +34,26 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <p class="login-box-msg">Inicia sesión.</p>
 
     <form action="{{ route('login') }}" method="post">
-      <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email" value="{{ old('email') }}" name="email">
-        <span class="glyphicon glyphicon-envelope form-control-feedback">
-            @error('email')
-                
-                <strong>{{ $message }}</strong>
-                
-            @enderror
-        </span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password" name="password" required autocomplete="current-password">
-        <span class="glyphicon glyphicon-lock form-control-feedback">
-            
-            @error('password')
-                
-                <strong>{{ $message }}</strong>
-                
-            @enderror
+      <div class="form-group @error('email') has-error @enderror">
+        <input type="email" class="form-control" placeholder="Email" value="{{ old('email') }}" name="email">    
 
-        </span>
+        @error('email')
+                                
+            <span class="help-block">{{ $message }}</span>
+            
+        @enderror    
+      </div>
+      <div class="form-group @error('password') has-error @enderror">
+        <input type="password" class="form-control" placeholder="Password" name="password" required autocomplete="current-password">  
+
+        @error('password')
+                
+            <span class="help-block">{{ $message }}</span>
+            
+        @enderror      
       </div>
       <div class="row">
         <div class="col-xs-8">
