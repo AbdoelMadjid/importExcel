@@ -148,7 +148,7 @@ class UserAdministrator extends Controller
 
     public function addPermission($id, $permission)
     {
-        $user = User::where('id',$id)->first();
+        $user = User::withTrashed()->where('id',$id)->first();
 
         if (!$user) {
             return abort(404);
@@ -162,7 +162,7 @@ class UserAdministrator extends Controller
 
     public function deletePermission($id, $permission)
     {
-        $user = User::where('id',$id)->first();
+        $user = User::withTrashed()->where('id',$id)->first();
 
         if (!$user) {
             return abort(404);
