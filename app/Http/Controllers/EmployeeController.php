@@ -84,6 +84,7 @@ class EmployeeController extends Controller
             'date-desaffiliated'=>['nullable','date'],
             'date-affiliated'=>['nullable','date'],
             'email'=>['array'],
+            'email.*'=>['string', 'email', 'max:255', 'unique:email_employees,email'],
             'phone'=>['array'],
             'secretary'=>['array','min:1','required'],
             'secretary.*'=>['required','exists:secretaries,id'],
