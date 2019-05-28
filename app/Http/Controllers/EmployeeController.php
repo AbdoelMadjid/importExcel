@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\EmailEmployee;
 use App\Employee;
 use App\Phone;
+use App\Secretary;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -48,7 +49,11 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('employee.create');
+        $secretaries = Secretary::all();
+
+        return view('employee.create',[
+            'secretaries'=>$secretaries,
+        ]);
     }
 
     /**
@@ -80,6 +85,8 @@ class EmployeeController extends Controller
             'date-affiliated'=>['nullable','date'],
             'email'=>['array'],
             'phone'=>['array'],
+            'secretary'=>['array','min:1','required'],
+            'secretary.*'=>['required','exists:secretaries,id'],
             
         ]);
 
@@ -118,6 +125,8 @@ class EmployeeController extends Controller
             ]);
 
         }
+
+        $employee->secretaries()->attach($request->input('secretary'));
             
 
         return redirect()->route('employee.index')->with('success','Creado con Exito!');
@@ -132,7 +141,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = Employee::with(['emails','phones'])->where('id',$id)->first();
+        $employee = Employee::with(['emails','phones','secretaries'])->where('id',$id)->first();
         
         return view('employee.show',[
             'employee'=>$employee,
@@ -147,12 +156,15 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $employee = Employee::with(['emails','phones'])->withCount(['emails','phones'])->where('id',$id)->first();
+        $employee = Employee::with(['emails','phones','secretaries'])->withCount(['emails','phones'])->where('id',$id)->first();
 
         //dd($employee);
 
+        $secretaries = Secretary::all();
+
         return view('employee.edit',[
             'employee' => $employee,
+            'secretaries'=>$secretaries,
         ]);
     }
 
@@ -185,6 +197,8 @@ class EmployeeController extends Controller
             'email'=>['array'],
             'email.*'=>['string', 'email', 'max:255', 'unique:email_employees,email'],
             'phone'=>['array'],
+            'secretary'=>['array','min:1','required'],
+            'secretary.*'=>['required','exists:secretaries,id'],
             
         ]);
 

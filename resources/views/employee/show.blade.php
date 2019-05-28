@@ -23,8 +23,11 @@
 		                  <b>Fecha de Nacimiento:</b> <a class="pull-right">{{ $employee->birthday }}</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Ubicacion:</b> <a class="pull-right">{{ $employee->location }}</a>
+		                  <b>Edad:</b> <a class="pull-right">{{ Carbon\Carbon::parse($employee->birthday)->age }}</a>
 		                </li>
+                    <li class="list-group-item">
+                      <b>Tipo:</b> <a class="pull-right">{{ $employee->type }}</a>
+                    </li>
 		            </ul>
 
 
@@ -35,14 +38,17 @@
               		
               		<ul class="list-group list-group-unbordered">
 		                <li class="list-group-item">
-		                  <b>Fecha de Admision</b> <a class="pull-right">{{ $employee->date_admission }}</a>
+		                  <b>Fecha de Admision:</b> <a class="pull-right">{{ $employee->date_admission }}</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Following</b> <a class="pull-right">543</a>
+		                  <b>Sexo:</b> <a class="pull-right">{{ $employee->sex == true ? "M" : "F" }}</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Friends</b> <a class="pull-right">13,287</a>
+		                  <b>Afiliado:</b> <a class="pull-right">{{ $employee->affiliate == true ? 'Si' : 'No' }}</a>
 		                </li>
+                    <li class="list-group-item">
+                      <b>SAP:</b> <a class="pull-right">{{ $employee->sap}}</a>
+                    </li>
 		            </ul>
 
 
@@ -57,39 +63,54 @@
           <!-- About Me Box -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">About Me</h3>
+              <h3 class="box-title">Mas informacion</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
-
-              <p class="text-muted">
-                B.S. in Computer Science from the University of Tennessee at Knoxville
-              </p>
 
               <hr>
-
+              
               <strong><i class="fa fa-map-marker margin-r-5"></i> Ubicación</strong>
 
               <p class="text-muted">{{ $employee->location }}</p>
 
               <hr>
 
-              <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+              <strong><i class="fa fa-envelope margin-r-5"></i> Emails</strong>
 
+              @forelse($employee->emails as $email)
               <p>
-                <span class="label label-danger">UI Design</span>
-                <span class="label label-success">Coding</span>
-                <span class="label label-info">Javascript</span>
-                <span class="label label-warning">PHP</span>
-                <span class="label label-primary">Node.js</span>
+                <span class="label label-primary">{{$email->email}}</span>
               </p>
+              @empty
+              <p>Sin emails</p>
+              @endforelse
 
               <hr>
 
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+              <strong><i class="fa fa-phone margin-r-5"></i> Telefonos</strong>
 
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+              @forelse($employee->phones as $phone)
+              <p>
+                <span class="label label-info">{{$phone->phone}}</span>
+              </p>
+              @empty
+              <p>Sin Telefono</p>
+              @endforelse
+
+              <hr>
+
+              <strong><i class="fa fa-phone margin-r-5"></i> Roles</strong>
+
+              @forelse($employee->secretaries as $secretary)
+              <p>
+                <span class="label label-warning">{{$secretary->description}}</span>
+              </p>
+              @empty
+              <p>Sin roles</p>
+              @endforelse
+
+              
             </div>
             <!-- /.box-body -->
           </div>

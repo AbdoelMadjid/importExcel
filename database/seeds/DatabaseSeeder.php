@@ -4,6 +4,7 @@ use App\Imports\ExcelMysqlImport;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use App\User;
+use App\Secretary;
 use Spatie\Permission\Models\Permission;
 
 
@@ -47,6 +48,41 @@ class DatabaseSeeder extends Seeder
         $admin->givePermissionTo('read' ,'edit', 'delete','create','delete');
         
         $user->givePermissionTo('read' ,'edit', 'delete','create','delete');
+
+        $secretary = [
+            1=>[
+                'description'=>'Secreatario General'
+            ],
+            2=>[
+                'description'=>'Secreatario General Adjunto'
+            ],
+            3=>[
+                'description'=>'Secretaría de Divulgacion y Actas'
+            ],
+            4=>[
+                'description'=>'Secretaría Género'
+            ],
+            5=>[
+                'description'=>'Secretaría Seguridad Social'
+            ],
+            6=>[
+                'description'=>'Secretaría Deportes, Rec. Cultura'
+            ],
+            7=>[
+                'description'=>'Secretaría Juventud'
+            ],
+            8=>[
+                'description'=>'Secretaria Finanzas y Adm.'
+            ],
+            9=>[
+                'description'=>'Secretaría de Educación'
+            ],
+            10=>[
+                'description'=>'Secretarías de Conflictos'
+            ],
+        ];
+
+        Secretary::insert($secretary);
 		
 	
         Excel::import(new ExcelMysqlImport, 'demo.csv','local');

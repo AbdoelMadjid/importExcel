@@ -420,6 +420,17 @@
 
               </div>
 
+              <div class="form-group">
+                 @foreach($secretaries as $secretary)
+                   <div class="checkbox">
+                    <label>
+                      <input id="checkbox-{{ $secretary->id }}" type="checkbox" name="secretary[]" class="required_group" value="{{$secretary->id}}" >
+                      {{$secretary->description}}
+                    </label>
+                  </div>                 
+                 @endforeach
+              </div>
+
               <div style="margin-top: 10px;">
               
                 <button class="btn btn-success"> Guardar </button>
@@ -548,6 +559,19 @@ $(document).ready(function(){
     //});
 });
 
+$(document).ready(function(){
+    $("form").submit(function(){
+    if ($('input:checkbox').filter(':checked').length < 1){
+        alert("Tiene que seleccionar al menos un rol de secretari@!");
+    return false;
+    }
+    });
+});
+@forelse($employee->secretaries as $secretary)
+$('#checkbox-{{$secretary->id}}').prop('checked', true);
+@empty
+
+@endforelse
   </script>
 
 @endsection

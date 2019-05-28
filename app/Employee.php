@@ -43,4 +43,9 @@ class Employee extends Model
     	return $this->hasMany(Phone::class);
 
     }
+
+    public function secretaries()
+    {
+    	return $this->belongsToMany(Secretary::class);
+    }
 }
