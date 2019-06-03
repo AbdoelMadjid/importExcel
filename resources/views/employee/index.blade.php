@@ -10,9 +10,9 @@
             <div class="box-header">
               <h3 class="box-title">Lista Empleados</h3>
             </div>
-            <!-- /.box-header -->
             <div class="box-body table-responsive">
               <table id="example1" class="table table-bordered table-striped">
+                
                 <thead>
                 <tr>
                    <th>Cedula</th>
@@ -32,7 +32,6 @@
                   <th></th>
                 </tr>
                 </thead>
-                <tbody>
                 @forelse($employees as $employee)
 
                   <tr>
@@ -138,17 +137,44 @@
 <script type="text/javascript">
   
 
-   $(function () {
-    $('#example1').DataTable()
-    $('#example2').DataTable({
-      'paging'      : true,
-      'lengthChange': false,
-      'searching'   : false,
-      'ordering'    : true,
-      'info'        : true,
-      'autoWidth'   : false
-    })
-  })
+ 
+
+  
+$(document).ready(function() {
+    // Setup - add a text input to each footer cell
+    $('#example1 thead tr').clone(true).appendTo( '#example1 thead' );
+
+    var c = 0;
+
+    $('#example1 thead tr:eq(1) th').each( function (i) {
+      if(c <= 11){
+
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+ 
+        $( 'input', this ).on( 'keyup change', function () {
+            if ( table.column(i).search() !== this.value ) {
+                table
+                    .column(i)
+                    .search( this.value )
+                    .draw();
+            }
+        } );
+
+        c++;
+
+      }
+        
+    } );
+
+ 
+    var table = $('#example1').DataTable( {
+        orderCellsTop: true,
+        fixedHeader: true
+    } );
+} );
+
+
 
 
 </script>
