@@ -150,7 +150,7 @@ $(document).ready(function() {
       if(c <= 11){
 
         var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+        $(this).html( '<input type="text" placeholder="Buscar por '+title+'" />' );
  
         $( 'input', this ).on( 'keyup change', function () {
             if ( table.column(i).search() !== this.value ) {
