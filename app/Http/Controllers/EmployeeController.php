@@ -315,11 +315,27 @@ class EmployeeController extends Controller
             $result[] = $employee[0];
         }
 
-        $employees = Employee::with('sex')->whereIn('cedula',$result)->get();
+        $employees = Employee::with(['sex','emails'])->whereIn('cedula',$result)->get();
 
         $result = array();
 
         foreach ($employees as $employee) {
+
+            $emails = '';
+            
+            $phones = '';
+
+            foreach ($employee->emails  as $email) {
+                
+                $emails =  $emails.'|'.$email->email;
+
+            }
+
+            foreach ($employee->phones  as $phone) {
+                
+                $phones =  $phones.'|'.$phone->phone;
+
+            } 
             
             $result[] = [
                 1=>$employee->cedula,
@@ -339,13 +355,10 @@ class EmployeeController extends Controller
                 15=>$employee->disaffiliated_date,
                 16=>$employee->description,
                 17=>$employee->affiliated == true ? 'Si' : 'No',
-                18=>$employee->monto_802,
-                19=>$employee->monto_804,
-                20=>$employee->monto_806,
-                21=>$employee->monto_807,
-                22=>$employee->monto_808,
                 23=>$employee->memo,
                 24=>$employee->type,
+                25=>$emails,
+                26=>$phones,
             ];
 
 

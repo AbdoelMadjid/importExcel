@@ -33,13 +33,10 @@ class Employees implements FromArray, WithHeadings
         'Fecha de Desafiliado',        
         'Descripcion',
         'Afiliado',
-        'Monto-802',
-        'Monto-804',
-        'Monto-806',
-        'Monto-807',
-        'Monto-808',
         'Memo',
         'Tipo',
+        'Emails',
+        'Telefonos',
         ];
     }
     /**

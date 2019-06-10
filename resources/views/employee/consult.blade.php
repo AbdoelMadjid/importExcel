@@ -10,6 +10,9 @@
             <div class="box-header">
               <h3 class="box-title">Lista Empleados</h3>
             </div>
+            <div>
+              <button id="descarga" class="btn btn-primary">Descargar<span class="fa fa-download"></span></button>
+            </div>
             <div class="box-body table-responsive">
               <table id="example1" class="table table-bordered table-striped">
                 
@@ -163,6 +166,35 @@ $(document).ready(function() {
         },
     },
     } );
+
+
+  $('#descarga').on('click', function() {
+    
+    //filtered rows data as arrays
+    //console.log(table.rows( { filter : 'applied'} ).data());
+
+    var employees = JSON.parse(JSON.stringify(table.rows( { filter : 'applied'} ).data()));
+
+    var urlDownload = "{{ asset('storage/public/export/') }}";
+
+    console.log(employees);
+
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      method: "POST",
+      url: "{{ route('employee.download') }}", 
+      dataType: false,
+      data:{
+        'employees': employees,
+      },
+      success: function(result){
+        console.log(result);
+        window.location = result;
+      },
+    });                                  
+});
 } );
 
 
