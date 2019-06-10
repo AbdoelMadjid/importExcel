@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Dashboard</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -111,9 +112,21 @@
             
             <li><a href="{{ route('employee.index') }}"><i class="fa fa-circle-o"></i>Lista de empleados</a></li>
 
+            @can('create')
+
             <li><a href="{{ route('employee.create') }}"><i class="fa fa-circle-o"></i> Crear empleados</a></li>
 
+            @endcan
+
           </ul>
+        </li>
+        <li>
+
+          <a href="{{ route('employee.consult') }}">
+            <i class="fa fa-address-book"></i> 
+            <span>Consultar Empleados</span>
+          </a>
+
         </li>
         <li class="header">OTROS</li>
         <li>

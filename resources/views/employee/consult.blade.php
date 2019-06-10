@@ -10,11 +10,6 @@
             <div class="box-header">
               <h3 class="box-title">Lista Empleados</h3>
             </div>
-            <div class="box-body">
-              <div>
-                <button id="descarga" class="btn btn-primary">Descargar<span class="fa fa-download"></span></button>
-              </div>
-            </div>
             <div class="box-body table-responsive">
               <table id="example1" class="table table-bordered table-striped">
                 
@@ -32,9 +27,6 @@
                   <th>SAP-Descripcion</th>
                   <th>Ubicación</th>
                   <th>Afiliado</th>
-                  <th>Opciones</th>
-                  <th></th>
-                  <th></th>
                 </tr>
                 </thead>
                 @forelse($employees as $employee)
@@ -52,29 +44,6 @@
                     <td>{{ $employee->sap_description }}</td>
                     <td>{{ $employee->location }}</td>
                     <td>{{ $employee->affiliate == true ? 'Si' : 'No' }}</td>
-                    @can('read')
-                      <td>
-                        <a class="btn btn-success" href="{{ route('employee.show',$employee->id) }}"> 
-                          <span class="fa fa-eye"></span> 
-                        </a>
-                      </td>
-                    @endcan
-
-                    @can('edit')
-                    <td>
-                      <a class="btn btn-primary" href="{{ route('employee.edit',$employee->id) }}"> <span class="fa fa-pencil"></span> 
-                      </a>
-                    </td>
-                    @endcan
-
-                    @can('delete')
-                    <td>
-                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger-{{ $employee->id }}">
-                        <span class="fa fa-trash"></span>
-                      </button>                      
-                    </td>
-                    @endcan
-
                   </tr>
 
                    <!-- modal -->
@@ -129,9 +98,6 @@
                   <th>SAP-Descripcion</th>
                   <th>Ubicación</th>
                   <th>Afiliado</th>
-                  <th>Opciones</th>
-                  <th></th>
-                  <th></th>
                 </tr>
                 </tfoot>
               </table>
@@ -180,7 +146,7 @@ $(document).ready(function() {
     } );
 
  
-    var table = $('#example1').DataTable( {
+   var table = $('#example1').DataTable( {
         orderCellsTop: true,
         fixedHeader: true,
         language: {
@@ -197,37 +163,7 @@ $(document).ready(function() {
         },
     },
     } );
-
-  $('#descarga').on('click', function() {
-    
-    //filtered rows data as arrays
-    //console.log(table.rows( { filter : 'applied'} ).data());
-
-    var employees = JSON.parse(JSON.stringify(table.rows( { filter : 'applied'} ).data()));
-
-    var urlDownload = "{{ asset('storage/public/export/') }}";
-
-    console.log(employees);
-
-    $.ajax({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      method: "POST",
-      url: "{{ route('employee.download') }}", 
-      dataType: false,
-      data:{
-        'employees': employees,
-      },
-      success: function(result){
-        console.log(result);
-        window.location = result;
-      },
-    });                                  
-}) 
-
 } );
-
 
 
 

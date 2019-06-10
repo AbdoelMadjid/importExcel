@@ -63,4 +63,14 @@ Route::group(['middleware' => ['auth']], function () {
             'destroy'=>'employee.destroy',
         ]);
 
+    Route::get('empleados/consulta','EmployeeController@consult')->name('employee.consult');
+
+    Route::post('empleados/descargas','EmployeeController@download')->name('employee.download');
+
+    Route::get('download/excel/{file}',function(){
+
+        return asset('storage/public/export'.$file);
+
+    });
+
 });

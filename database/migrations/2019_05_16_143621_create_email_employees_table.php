@@ -15,7 +15,7 @@ class CreateEmailEmployeesTable extends Migration
     {
         Schema::create('email_employees', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('email')->unique();
+            $table->string('email');
             
             $table->integer('employee_id')->unsigned();
             $table->foreign('employee_id')->references('id')->on('employees');

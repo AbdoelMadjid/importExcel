@@ -97,9 +97,11 @@
 
                   <select class="form-control" name="sex" required>
                    
-                    <option value="1">Mascuino</option>
-                   
-                    <option value="0">Femenino</option>
+                    @foreach($sexes as $sex)
+                  
+                    <option {{ old('sex') == $sex->id ? 'selected' :'' }} value="{{ $sex->id }}">{{ $sex->description }}</option>
+                  
+                    @endforeach
                   
                   </select>
 
@@ -352,6 +354,108 @@
                   <input class="form-control" type="date" name="date-desaffiliated" value="{{ old('date-desaffiliated') }}">
 
                   @error('date-desaffiliated')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+              </div>
+
+              <div class="row" style="margin-top: 10px;">
+                
+                <div class="col-md-6">
+                  <label>Monto-802:</label>
+
+                  <input class="form-control" type="numeric" name="monto_802" value="{{ old('monto_802') }}">
+
+                  @error('monto_802')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+                <div class="col-md-6">
+                  <label>Monto-804:</label>
+
+                  <input class="form-control" type="numeric" name="monto_804" value="{{ old('monto_804') }}">
+
+                  @error('monto_804')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+              </div>
+
+              <div class="row" style="margin-top: 10px;">
+                
+                <div class="col-md-6">
+                  <label>Monto-806:</label>
+
+                  <input class="form-control" type="numeric" name="monto_806" value="{{ old('monto_806') }}">
+
+                  @error('monto_806')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+                <div class="col-md-6">
+                  <label>Monto-807:</label>
+
+                  <input class="form-control" type="numeric" name="monto_807" value="{{ old('monto_807') }}">
+
+                  @error('monto_807')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+              </div>
+
+              <div class="row" style="margin-top: 10px;">
+                
+                <div class="col-md-6">
+                  <label>Monto-808:</label>
+
+                  <input class="form-control" type="numeric" name="monto_808" value="{{ old('monto_808') }}">
+
+                  @error('monto_808')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+                <div class="col-md-6">
+                  <label>Memo:</label>
+
+                  <input class="form-control" type="text" name="memo" value="{{ old('memo') }}">
+
+                  @error('memo')
                     
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

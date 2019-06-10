@@ -4,6 +4,7 @@ use App\Imports\ExcelMysqlImport;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use App\User;
+use App\Sex;
 use App\Secretary;
 use Spatie\Permission\Models\Permission;
 
@@ -22,6 +23,10 @@ class DatabaseSeeder extends Seeder
         $role = Role::create(['name' => 'Administrator']);
         
         $role = Role::create(['name' => 'User']);
+        
+        Sex::create(['description' => 'Femenino']);
+        Sex::create(['description' => 'Masculino']);
+        Sex::create(['description' => 'Otro']);
 
         $permission = Permission::create(['name' => 'edit']);
         $permission = Permission::create(['name' => 'create']);

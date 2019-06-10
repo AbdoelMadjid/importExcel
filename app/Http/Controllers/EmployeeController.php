@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use App\EmailEmployee;
 use App\Employee;
+use App\Exports\Employees;
 use App\Phone;
 use App\Secretary;
+use App\Sex;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 
 class EmployeeController extends Controller
 {
@@ -33,11 +38,22 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
+        $employees = Employee::with('sex')->get();
 
         //dd(Carbon::parse($employees->first()->birthday)->age);
 
         return view('employee.index',[
+            'employees'=>$employees,
+        ]);
+    }
+
+    public function consult()
+    {
+        $employees = Employee::with('sex')->get();
+
+        //dd(Carbon::parse($employees->first()->birthday)->age);
+
+        return view('employee.consult',[
             'employees'=>$employees,
         ]);
     }
@@ -49,10 +65,14 @@ class EmployeeController extends Controller
      */
     public function create()
     {
+
         $secretaries = Secretary::all();
+        
+        $sexes = Sex::all();
 
         return view('employee.create',[
             'secretaries'=>$secretaries,
+            'sexes'=>$sexes,
         ]);
     }
 
@@ -69,7 +89,7 @@ class EmployeeController extends Controller
         $request->validate([
             'cedula'=>['numeric','required','unique:employees,cedula'],
             'name'=>['required','string'],
-            'sex'=>['required','boolean'],
+            'sex'=>['required','exists:sexes,id'],
             'date_admission'=>['required','date'],
             'birthday'=>['required','date'],
             'type'=>['required','string'],
@@ -88,13 +108,19 @@ class EmployeeController extends Controller
             'phone'=>['array'],
             'secretary'=>['array','min:1','required'],
             'secretary.*'=>['required','exists:secretaries,id'],
+            'monto_802'=>['numeric','nullable'],
+            'monto_804'=>['numeric','nullable'],
+            'monto_806'=>['numeric','nullable'],
+            'monto_807'=>['numeric','nullable'],
+            'monto_808'=>['numeric','nullable'],
+            'memo'=>['string','nullable'],
             
         ]);
 
         $employee = Employee::create([
             'cedula'=>$request->input('cedula'),
             'name'=>$request->input('name'),
-            'sex'=>$request->input('sex'),
+            'sex_id'=>$request->input('sex'),
             'date_admission'=>$request->input('date_admission'),
             'birthday'=>$request->input('birthday'),
             'type'=>$request->input('type'),
@@ -106,6 +132,12 @@ class EmployeeController extends Controller
             'job_description'=>$request->input('job_description'),
             'location'=>$request->input('location'),
             'affiliated'=>$request->input('affiliate'),
+            'monto_802'=>$request->input('monto_802'),
+            'monto_804'=>$request->input('monto_804'),
+            'monto_806'=>$request->input('monto_806'),
+            'monto_807'=>$request->input('monto_807'),
+            'monto_808'=>$request->input('monto_808'),
+            'memo'=>$request->input('memo'),
         ]);
 
         foreach ($request->input('email') as $email) {
@@ -142,7 +174,7 @@ class EmployeeController extends Controller
      */
     public function show($id)
     {
-        $employee = Employee::with(['emails','phones','secretaries'])->where('id',$id)->first();
+        $employee = Employee::with(['emails','phones','secretaries','sex'])->where('id',$id)->first();
         
         return view('employee.show',[
             'employee'=>$employee,
@@ -161,11 +193,14 @@ class EmployeeController extends Controller
 
         //dd($employee);
 
+        $sexes = Sex::all();
+
         $secretaries = Secretary::all();
 
         return view('employee.edit',[
             'employee' => $employee,
             'secretaries'=>$secretaries,
+            'sexes'=>$sexes,
         ]);
     }
 
@@ -179,9 +214,8 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'cedula'=>['numeric','required','unique:employees,cedula,'.$id],
             'name'=>['required','string'],
-            'sex'=>['required','boolean'],
+            'sex'=>['required','exists:sexes,id'],
             'date_admission'=>['required','date'],
             'birthday'=>['required','date'],
             'type'=>['required','string'],
@@ -196,19 +230,23 @@ class EmployeeController extends Controller
             'date-desaffiliated'=>['nullable','date'],
             'date-affiliated'=>['nullable','date'],
             'email'=>['array'],
-            'email.*'=>['string', 'email', 'max:255', 'unique:email_employees,email'],
+            'email.*'=>['string', 'email', 'max:255'],
             'phone'=>['array'],
             'secretary'=>['array','min:1','required'],
-            'secretary.*'=>['required','exists:secretaries,id'],
+            'monto_802'=>['numeric','nullable'],
+            'monto_804'=>['numeric','nullable'],
+            'monto_806'=>['numeric','nullable'],
+            'monto_807'=>['numeric','nullable'],
+            'monto_808'=>['numeric','nullable'],
+            'memo'=>['string','nullable'],
             
         ]);
 
         $employee = Employee::where('id',$id)->first();
 
         $employee->update([
-            'cedula'=>$request->input('cedula'),
             'name'=>$request->input('name'),
-            'sex'=>$request->input('sex'),
+            'sex_id'=>$request->input('sex'),
             'date_admission'=>$request->input('date_admission'),
             'birthday'=>$request->input('birthday'),
             'type'=>$request->input('type'),
@@ -222,6 +260,12 @@ class EmployeeController extends Controller
             'affiliated'=>$request->input('affiliate'),
             'disaffiliated_date'=>$request->input('date-desaffiliated'),
             'affiliated_date'=>$request->input('date-affiliated'),
+            'monto_802'=>$request->input('monto_802'),
+            'monto_804'=>$request->input('monto_804'),
+            'monto_806'=>$request->input('monto_806'),
+            'monto_807'=>$request->input('monto_807'),
+            'monto_808'=>$request->input('monto_808'),
+            'memo'=>$request->input('memo'),
         ]);
 
         EmailEmployee::where('employee_id',$id)->delete();
@@ -247,7 +291,7 @@ class EmployeeController extends Controller
 
         }
 
-        return back()->with('success','Editado con Exito!');
+        return redirect()->route('employee.index')->with('success','Editado con Exito!');
     }
 
     /**
@@ -261,5 +305,58 @@ class EmployeeController extends Controller
         Employee::where('id',$id)->delete();
 
         return back()->with('success','Eliminado Exitosamente');
+    }
+
+    public function download(Request $request)
+    {
+        $result = array();
+
+        foreach ($request->input('employees') as $employee) {
+            $result[] = $employee[0];
+        }
+
+        $employees = Employee::with('sex')->whereIn('cedula',$result)->get();
+
+        $result = array();
+
+        foreach ($employees as $employee) {
+            
+            $result[] = [
+                1=>$employee->cedula,
+                2=>$employee->name,
+                3=>$employee->date_admission,
+                4=>$employee->birthday,
+                5=>Carbon::parse($employee->birthday)->age,
+                6=>$employee->sex->description,
+                7=>$employee->cost,
+                8=>$employee->cost_description,
+                9=>$employee->sap,
+                10=>$employee->sap_description,
+                11=>$employee->job,
+                12=>$employee->job_description,
+                13=>$employee->location,
+                14=>$employee->affiliated_date,
+                15=>$employee->disaffiliated_date,
+                16=>$employee->description,
+                17=>$employee->affiliated == true ? 'Si' : 'No',
+                18=>$employee->monto_802,
+                19=>$employee->monto_804,
+                20=>$employee->monto_806,
+                21=>$employee->monto_807,
+                22=>$employee->monto_808,
+                23=>$employee->memo,
+                24=>$employee->type,
+            ];
+
+
+        }
+
+        //return \Response::json($result);
+
+        $name = date('d-m-Y-H:i:s').'.csv'; 
+
+        Excel::store(new Employees($result), 'employees/'.$name, 'public');
+
+        return \Storage::disk('public')->url('employees/'.$name);
     }
 }

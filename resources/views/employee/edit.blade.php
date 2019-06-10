@@ -23,7 +23,7 @@
                 <div class="col-md-6">
                   <label>Cedula:</label>
 
-                  <input class="form-control" type="" name="cedula" value="{{ $employee->cedula ? $employee->cedula : old('cedula')  }}" required placeholder="Cedula">
+                  <input class="form-control" type="" name="cedula" value="{{ $employee->cedula ? $employee->cedula : old('cedula')  }}" required placeholder="Cedula" readonly>
 
                   @error('cedula')
                     
@@ -97,11 +97,13 @@
                 <div class="col-md-6">
                   <label>Sexo:</label>
 
-                  <select id="sex" class="form-control" name="sex" required>
+                  <select id="sex_id" class="form-control" name="sex" required>
                    
-                    <option value="1">Mascuino</option>
-                   
-                    <option value="0">Femenino</option>
+                    @foreach($sexes as $sex)
+                  
+                    <option {{ old('sex') == $sex->id ? 'selected' :'' }} value="{{ $sex->id }}">{{ $sex->description }}</option>
+                  
+                    @endforeach
                   
                   </select>
 
@@ -275,7 +277,6 @@
 
               </div>
 
-
               <div class="row">
                 
                 <div class="col-md-6">
@@ -409,6 +410,108 @@
                   <input class="form-control" type="date" name="date-desaffiliated" value="{{ $employee->disaffiliated_date ? $employee->disaffiliated_date : old('date-desaffiliated') }}">
 
                   @error('date-desaffiliated')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+              </div>
+
+              <div class="row" style="margin-top: 10px;">
+                
+                <div class="col-md-6">
+                  <label>Monto-802:</label>
+
+                  <input class="form-control" type="numeric" name="monto_802" value="{{ $employee->monto_802 ? $employee->monto_802 :  old('monto_802') }}">
+
+                  @error('monto_802')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+                <div class="col-md-6">
+                  <label>Monto-804:</label>
+
+                  <input class="form-control" type="numeric" name="monto_804" value="{{ $employee->monto_804 ? $employee->monto_804 :  old('monto_804') }}">
+
+                  @error('monto_804')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+              </div>
+
+              <div class="row" style="margin-top: 10px;">
+                
+                <div class="col-md-6">
+                  <label>Monto-806:</label>
+
+                  <input class="form-control" type="numeric" name="monto_806" value="{{ $employee->monto_806 ? $employee->monto_806 :  old('monto_806') }}">
+
+                  @error('monto_806')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+                <div class="col-md-6">
+                  <label>Monto-807:</label>
+
+                  <input class="form-control" type="numeric" name="monto_807" value="{{ $employee->monto_807 ? $employee->monto_807 :  old('monto_807') }}">
+
+                  @error('monto_807')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+              </div>
+
+              <div class="row" style="margin-top: 10px;">
+                
+                <div class="col-md-6">
+                  <label>Monto-808:</label>
+
+                  <input class="form-control" type="numeric" name="monto_808" value="{{ $employee->monto_808 ? $employee->monto_808 :  old('monto_808') }}">
+
+                  @error('monto_808')
+                    
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+
+                  @enderror
+
+                </div>
+
+                <div class="col-md-6">
+                  <label>Memo:</label>
+
+                  <input class="form-control" type="text" name="memo" value="{{ $employee->memo ? $employee->memo : old('memo') }}">
+
+                  @error('memo')
                     
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -570,6 +673,10 @@ $(document).ready(function(){
 @forelse($employee->secretaries as $secretary)
 $('#checkbox-{{$secretary->id}}').prop('checked', true);
 @empty
+
+@if (!old('sex'))
+  $('#sex_id').val({{ $employee->sex_id }});
+@endif
 
 @endforelse
   </script>

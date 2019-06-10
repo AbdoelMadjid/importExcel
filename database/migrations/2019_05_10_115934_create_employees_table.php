@@ -20,7 +20,6 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->date('date_admission');            
             $table->date('birthday');
-            $table->boolean('sex');
             $table->string('type');
             $table->string('cost');
             $table->string('cost_description');

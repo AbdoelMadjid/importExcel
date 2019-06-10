@@ -21,7 +21,7 @@ class ExcelMysqlImport implements ToModel
             'name'=>$row[1],
             'date_admission'=>$this->dateFormated($row[2]),            
             'birthday'=>$this->dateFormated($row[4]),
-            'sex'=>$this->sexFormated($row[6]),
+            'sex_id'=>$this->sexFormated($row[6]),
             'type'=>$row[7],
             'cost'=>$row[8],
             'cost_description'=>$row[9],
@@ -43,11 +43,15 @@ class ExcelMysqlImport implements ToModel
     public function sexFormated($var)
     {   
         if ($var == "F") {
-            return false;
+            return 1;
         }
 
         if ($var == "M") {
-            return true;
+            return 2;
+        }
+
+        if ($var == "O") {
+            return 2;
         }
 
 

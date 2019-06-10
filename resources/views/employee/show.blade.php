@@ -41,7 +41,7 @@
 		                  <b>Fecha de Admision:</b> <a class="pull-right">{{ $employee->date_admission }}</a>
 		                </li>
 		                <li class="list-group-item">
-		                  <b>Sexo:</b> <a class="pull-right">{{ $employee->sex == true ? "M" : "F" }}</a>
+		                  <b>Sexo:</b> <a class="pull-right">{{ $employee->sex->description }}</a>
 		                </li>
 		                <li class="list-group-item">
 		                  <b>Afiliado:</b> <a class="pull-right">{{ $employee->affiliate == true ? 'Si' : 'No' }}</a>

@@ -13,7 +13,7 @@ class Employee extends Model
     protected $fillable = [
 	    'cedula',
 	    'name',
-	    'sex',
+	    'sex_id',
 	    'date_admission',
 		'birthday',
 		'type',
@@ -28,6 +28,12 @@ class Employee extends Model
 		'affiliated_date',
 		'disaffiliated_date',
 		'description',
+		'monto_802',
+		'monto_804',
+		'monto_806',
+		'monto_807',
+		'monto_808',
+		'memo',
     ];
 
     public function emails()
@@ -47,5 +53,10 @@ class Employee extends Model
     public function secretaries()
     {
     	return $this->belongsToMany(Secretary::class);
+    }
+
+    public function sex()
+    {
+    	return $this->belongsTo(Sex::class);
     }
 }
