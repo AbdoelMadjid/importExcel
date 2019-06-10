@@ -422,8 +422,24 @@
               </div>
 
               <div class="row" style="margin-top: 10px;">
-                
+
+
                 <div class="col-md-6">
+                   <div class="form-group">
+                     @foreach($secretaries as $secretary)
+                       <div class="checkbox">
+                        <label>
+                          <input id="checkbox-{{ $secretary->id }}" type="checkbox" name="secretary[]" class="required_group" value="{{$secretary->id}}" >
+                          {{$secretary->description}}
+                        </label>
+                      </div>                 
+                     @endforeach
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+
+                <div class="form-group">
                   <label>Monto-802:</label>
 
                   <input class="form-control" type="numeric" name="monto_802" value="{{ $employee->monto_802 ? $employee->monto_802 :  old('monto_802') }}">
@@ -438,7 +454,7 @@
 
                 </div>
 
-                <div class="col-md-6">
+                <div class="form-group">
                   <label>Monto-804:</label>
 
                   <input class="form-control" type="numeric" name="monto_804" value="{{ $employee->monto_804 ? $employee->monto_804 :  old('monto_804') }}">
@@ -452,12 +468,8 @@
                   @enderror
 
                 </div>
-
-              </div>
-
-              <div class="row" style="margin-top: 10px;">
                 
-                <div class="col-md-6">
+                <div class="form-group">
                   <label>Monto-806:</label>
 
                   <input class="form-control" type="numeric" name="monto_806" value="{{ $employee->monto_806 ? $employee->monto_806 :  old('monto_806') }}">
@@ -472,7 +484,7 @@
 
                 </div>
 
-                <div class="col-md-6">
+                <div class="form-group">
                   <label>Monto-807:</label>
 
                   <input class="form-control" type="numeric" name="monto_807" value="{{ $employee->monto_807 ? $employee->monto_807 :  old('monto_807') }}">
@@ -486,12 +498,8 @@
                   @enderror
 
                 </div>
-
-              </div>
-
-              <div class="row" style="margin-top: 10px;">
                 
-                <div class="col-md-6">
+                <div class="form-group">
                   <label>Monto-808:</label>
 
                   <input class="form-control" type="numeric" name="monto_808" value="{{ $employee->monto_808 ? $employee->monto_808 :  old('monto_808') }}">
@@ -506,7 +514,12 @@
 
                 </div>
 
-                <div class="col-md-6">
+
+              </div>
+              
+              </div>
+
+               <div class="form-group">
                   <label>Memo:</label>
 
                   <input class="form-control" type="text" name="memo" value="{{ $employee->memo ? $employee->memo : old('memo') }}">
@@ -520,19 +533,7 @@
                   @enderror
 
                 </div>
-
-              </div>
-
-              <div class="form-group">
-                 @foreach($secretaries as $secretary)
-                   <div class="checkbox">
-                    <label>
-                      <input id="checkbox-{{ $secretary->id }}" type="checkbox" name="secretary[]" class="required_group" value="{{$secretary->id}}" >
-                      {{$secretary->description}}
-                    </label>
-                  </div>                 
-                 @endforeach
-              </div>
+                  
 
               <div style="margin-top: 10px;">
               
