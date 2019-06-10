@@ -7,7 +7,7 @@
           <!-- small box -->
           <div class="small-box bg-aqua">
             <div class="inner">
-              <h3>{{ $employess_info[0]->total+$employess_info[1]->total+$employess_info[2]->total }}</h3>
+              <h3>{{ $total }}</h3>
 
               <p>Todos</p>
             </div>
@@ -21,7 +21,7 @@
           <!-- small box -->
           <div class="small-box bg-green">
             <div class="inner">
-              <h3>{{ $employess_info[1]->total }}</h3>
+              <h3>{{ $m }}</h3>
 
               <p>Hombres</p>
             </div>
@@ -35,7 +35,7 @@
           <!-- small box -->
           <div class="small-box bg-yellow">
             <div class="inner">
-              <h3>{{ $employess_info[0]->total }}</h3>
+              <h3>{{ $f }}</h3>
 
               <p>Mujeres</p>
             </div>
@@ -49,7 +49,7 @@
           <!-- small box -->
           <div class="small-box bg-red">
             <div class="inner">
-              <h3>{{ $employess_info[2]->total }}</h3>
+              <h3>{{ $o }}</h3>
 
               <p>Otros</p>
             </div>
