@@ -84,7 +84,6 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {   
-        
 
         $request->validate([
             'cedula'=>['numeric','required','unique:employees,cedula'],
@@ -267,6 +266,8 @@ class EmployeeController extends Controller
             'monto_808'=>$request->input('monto_808'),
             'memo'=>$request->input('memo'),
         ]);
+
+        $employee->secretaries()->sync($request->input('secretary'));
 
         EmailEmployee::where('employee_id',$id)->delete();
         

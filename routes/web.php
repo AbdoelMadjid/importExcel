@@ -45,6 +45,15 @@ Route::group(['middleware' => ['auth']], function () {
         	'destroy'=>'user.administrator.destroy',
         ]);
 
+        Route::resource('administracion-de-eventos','EventController')->names([
+            'index'=>'event.administrator.index',
+            'edit'=>'event.administrator.edit',
+            'create'=>'event.administrator.create',
+            'store'=>'event.administrator.store',
+            'update'=>'event.administrator.update',
+            'destroy'=>'event.administrator.destroy',
+        ]);
+
         Route::get('administracion-de-usuarios/{id}/restore','UserAdministrator@restore')->name('user.administrator.restore');
 
         Route::get('administracion/permisos/{id}/{permiso}/agregar','UserAdministrator@addPermission')->name('add.permission');

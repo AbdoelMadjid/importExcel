@@ -1,5 +1,11 @@
 @extends('layouts.app')
 
+@section('styles')
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.css"/>
+
+@endsection
+
 @section('content')
 <!-- Small boxes (Stat box) -->
       <div class="row">
@@ -62,6 +68,30 @@
       </div>
       <!-- /.row -->
 
+      <div class="row">
+
+        <div class="col-md-12">
+
+
+          <div class="box box-primary">
+                <div class="box-header">
+                  <i class="ion ion-clipboard"></i>
+
+                  <h3 class="box-title">{{ "Calendario" }}</h3>
+
+                <div class="box-body">
+                  {!! $calendar->calendar() !!}
+                </div>
+                <!-- /.box-body -->
+              </div>
+              <!-- /.box -->
+
+            </div>
+          
+        </div>
+            
+      </div>
+
        <!-- solid sales graph -->
           <div class="box box-solid bg-teal-gradient">
             <div class="box-header">
@@ -85,14 +115,49 @@
           <!-- /.box -->
           <div class="row justify-content-md-center">
             
-            <div class="col-md-12">
+            <div class="col-md-6">
               <div id="fb-root"></div>
               <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v3.3&appId=288315375364682&autoLogAppEvents=1"></script>
 
               <div class="fb-page" data-href="https://www.facebook.com/Sitrapequia/ " data-tabs="timeline" data-width="" data-height="" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/Sitrapequia/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/Sitrapequia/">Sindicato Sitrapequia</a></blockquote></div>
             </div>
 
+            <div class="col-md-6">
+              
+               <!-- TO DO List -->
+              <div class="box box-primary">
+                <div class="box-header">
+                  <i class="ion ion-clipboard"></i>
+
+                  <h3 class="box-title">{{ "Registro de Secretari@s" }}</h3>
+
+                <div class="box-body">
+                  <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                  <ul class="todo-list">
+                    @forelse($secretaries_count as $secretary_count)
+
+                    <li>
+
+                      <span class="text">{{$secretary_count->description}}</span>
+                      
+                      <h4 class="label label-warning ">{{$secretary_count->employees_count}}</h4>
+                      
+                    </li>
+
+                    @empty
+                    @endforelse
+                  </ul>
+                </div>
+                <!-- /.box-body -->
+              </div>
+              <!-- /.box -->
+
+            </div>
+
           </div>
+
+          </div>
+
 @endsection
 @section('scripts')
 
@@ -135,4 +200,6 @@
     });
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.7/fullcalendar.min.js"></script>
+{!! $calendar->script() !!}
 @endsection

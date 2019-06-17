@@ -90,6 +90,14 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">NAVEACIÓN PRINCIPAL</li>
+        <li>
+
+          <a href="{{ route('home') }}">
+            <i class="fa fa-dashboard"></i> 
+            <span>Dashboard</span>
+          </a>
+
+        </li>
         @role('Administrator')
         <li class="treeview">
           <a href="#">
@@ -101,6 +109,20 @@
             <li><a href="{{ route('user.administrator.index') }}"><i class="fa fa-circle-o"></i>Lista de usuarios</a></li>
 
             <li><a href="{{ route('user.administrator.create') }}"><i class="fa fa-circle-o"></i> Crear usuarios</a></li>
+
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-calendar"></i>
+            <span>Administrar Calendario</span>
+          </a>
+          <ul class="treeview-menu">
+            
+            <li><a href="{{ route('event.administrator.index') }}"><i class="fa fa-circle-o"></i>Lista de eventos</a></li>
+
+            <li><a href="{{ route('event.administrator.create') }}"><i class="fa fa-circle-o"></i> Crear evento</a></li>
 
           </ul>
         </li>

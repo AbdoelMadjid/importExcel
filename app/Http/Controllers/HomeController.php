@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\Secretary;
 use Carbon\Carbon;
+use Calendar;
+use App\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -119,7 +122,34 @@ class HomeController extends Controller
             $r90_99,
         ];
 
-       
+        $secretaries_count = Secretary::withCount('employees')->get(); 
+
+        //dd($secretary_count);
+
+        //CALENDAR CODE
+
+        $events = [];
+        
+        $data = Event::all();
+        
+        if($data->count()) {
+            foreach ($data as $key => $value) {
+                $events[] = Calendar::event(
+                    $value->title,
+                    true,
+                    new \DateTime($value->start_date),
+                    new \DateTime($value->end_date.' +1 day'),
+                    null,
+                    // Add color and link on event
+                    [
+                        'color' => '#f05050',
+                        'url' => '#',
+                    ]
+                );
+            }
+        }
+
+        $calendar = Calendar::addEvents($events);       
         
 
         return view('home',[
@@ -129,6 +159,8 @@ class HomeController extends Controller
             'o'=>$o,
             'total'=>$total,
             'employeesOld'=>$employeesOld,
+            'secretaries_count'=>$secretaries_count,
+            'calendar'=>$calendar,
         ]);
     }
 }
