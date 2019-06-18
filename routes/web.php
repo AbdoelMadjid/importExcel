@@ -76,6 +76,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::post('empleados/descargas','EmployeeController@download')->name('employee.download');
 
+    Route::post('empleados/descargas/802','EmployeeController@download802')->name('employee.download.802');
+
     Route::get('download/excel/{file}',function(){
 
         return asset('storage/public/export'.$file);

@@ -34,6 +34,7 @@ class Employee extends Model
 		'monto_807',
 		'monto_808',
 		'memo',
+		'start_date',
     ];
 
     public function emails()

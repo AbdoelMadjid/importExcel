@@ -12,7 +12,8 @@
             </div>
             <div class="box-body">
               <div>
-                <button id="descarga" class="btn btn-primary">Descargar<span class="fa fa-download"></span></button>
+                <button id="descarga" class="btn btn-primary">Descargar <span class="fa fa-download"></span></button>
+                <button id="descarga-802" class="btn btn-primary">Descargar 802 <span class="fa fa-download"></span></button>
               </div>
             </div>
             <div class="box-body table-responsive">
@@ -215,6 +216,34 @@ $(document).ready(function() {
       },
       method: "POST",
       url: "{{ route('employee.download') }}", 
+      dataType: false,
+      data:{
+        'employees': employees,
+      },
+      success: function(result){
+        console.log(result);
+        window.location = result;
+      },
+    });                                  
+});
+
+  $('#descarga-802').on('click', function() {
+    
+    //filtered rows data as arrays
+    //console.log(table.rows( { filter : 'applied'} ).data());
+
+    var employees = JSON.parse(JSON.stringify(table.rows( { filter : 'applied'} ).data()));
+
+    var urlDownload = "{{ asset('storage/public/export/') }}";
+
+    console.log(employees);
+
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      method: "POST",
+      url: "{{ route('employee.download.802') }}", 
       dataType: false,
       data:{
         'employees': employees,
