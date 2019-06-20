@@ -74,6 +74,17 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('empleados/consulta','EmployeeController@consult')->name('employee.consult');
 
+
+    Route::resource('administracion-de-deducciones','DuctionController')->names([
+            'index'=>'ductions.index',
+            'show'=>'ductions.show',
+            'edit'=>'ductions.edit',
+            'create'=>'ductions.create',
+            'store'=>'ductions.store',
+            'update'=>'ductions.update',
+            'destroy'=>'ductions.destroy',
+        ]);
+
     Route::post('empleados/descargas','EmployeeController@download')->name('employee.download');
 
     Route::post('empleados/descargas/802','EmployeeController@download802')->name('employee.download.802');

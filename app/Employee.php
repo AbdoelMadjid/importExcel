@@ -56,6 +56,11 @@ class Employee extends Model
     	return $this->belongsToMany(Secretary::class);
     }
 
+    public function ductions()
+    {
+    	return $this->belongsToMany(Duction::class)->withPivot('import');
+    }
+
     public function sex()
     {
     	return $this->belongsTo(Sex::class);

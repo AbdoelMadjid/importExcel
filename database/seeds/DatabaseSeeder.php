@@ -1,12 +1,13 @@
 <?php
 
+use App\Duction;
 use App\Imports\ExcelMysqlImport;
-use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use App\User;
-use App\Sex;
 use App\Secretary;
+use App\Sex;
+use App\User;
+use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 
 class DatabaseSeeder extends Seeder
@@ -27,6 +28,12 @@ class DatabaseSeeder extends Seeder
         Sex::create(['description' => 'Femenino']);
         Sex::create(['description' => 'Masculino']);
         Sex::create(['description' => 'Otro']);
+        
+        Duction::create(['description' => '802']);
+        Duction::create(['description' => '804']);
+        Duction::create(['description' => '806']);
+        Duction::create(['description' => '807']);
+        Duction::create(['description' => '808']);
 
         $permission = Permission::create(['name' => 'edit']);
         $permission = Permission::create(['name' => 'create']);
@@ -84,6 +91,9 @@ class DatabaseSeeder extends Seeder
             ],
             10=>[
                 'description'=>'Secretarías de Conflictos'
+            ],
+            11=>[
+                'description'=>'Secretaría de Organizacion'
             ],
         ];
 

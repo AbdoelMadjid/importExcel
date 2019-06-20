@@ -414,10 +414,12 @@ class EmployeeController extends Controller
 
         //return \Response::json($result);
 
-        $name = date('d-m-Y-H:i:s').'.csv'; 
+        $name = date('d-m-Y-H:i:s').'.xlsx'; 
 
         Excel::store(new Employees802($result), 'employees/'.$name, 'public');
 
         return \Storage::disk('public')->url('employees/'.$name);
     }
+
+  
 }

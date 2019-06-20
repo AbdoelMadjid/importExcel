@@ -126,6 +126,16 @@
 
           </ul>
         </li>
+
+        <li>
+
+          <a href="{{ route('ductions.index') }}">
+            <i class="fa fa-file-excel-o"></i> 
+            <span>Deducciones</span>
+          </a>
+
+        </li>
+
         @else
         @endrole
 
