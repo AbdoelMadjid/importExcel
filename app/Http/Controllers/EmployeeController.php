@@ -7,6 +7,7 @@ use App\Employee;
 use App\Exports\Employees;
 use App\Exports\Employees802;
 use App\Phone;
+use App\Duction;
 use App\Secretary;
 use App\Sex;
 use Carbon\Carbon;
@@ -375,40 +376,66 @@ class EmployeeController extends Controller
         return \Storage::disk('public')->url('employees/'.$name);
     }
 
-    public function download802(Request $request)
+    public function downloadDuction($duction,Request $request)
     {
+        $duction = Duction::where('description',$duction)->first();
+
+        if (!$duction) {
+            return abort(404);
+        }
+
         $result = array();
 
         foreach ($request->input('employees') as $employee) {
+            
             $result[] = $employee[0];
         }
 
-        Employee::with(['sex','emails'])
+        /*Employee::with(['sex','emails'])
                 ->whereIn('cedula',$result)
                 ->update([
                     'start_date'=>Carbon::now(),
                 ]);
+        */
 
-        $employees = Employee::with(['sex','emails'])
+        $employees = Employee::with(['sex','emails','ductions'])
+                             ->whereHas('ductions',function($q) use ($duction){
+                                $q->where('description',$duction->description);
+                             })
                              ->whereIn('cedula',$result)
                              ->get();
 
 
+        if ($duction->description == '802') {
+            $result = array();
+
+            foreach ($employees as $employee) {
+                
+                $result[] = [
+                    1=>"0".$employee->cedula,
+                    2=>date('d.m.Y',strtotime($employee->start_date)),
+                    3=>$duction->description,
+                    4=>"",
+                    5=>1,
+                ];
 
 
-        $result = array();
+            }
+        }else{
+            $result = array();
 
-        foreach ($employees as $employee) {
-            
-            $result[] = [
-                1=>"0".$employee->cedula,
-                2=>date('d.m.Y',strtotime($employee->start_date)),
-                3=>"802",
-                4=>" ",
-                5=>1,
-            ];
+            foreach ($employees as $employee) {
+                
+                $result[] = [
+                    1=>"0".$employee->cedula,
+                    2=>date('d.m.Y',strtotime($employee->start_date)),
+                    3=>$duction->description,
+                    4=>is_null($employee->ductions->where('description',$duction->description)->first()) ? "" : $employee->ductions->where('description',$duction->description)->first()->pivot->import ,
+                    5=>"",
+                ];
 
 
+            }
         }
 
 

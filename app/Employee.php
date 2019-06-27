@@ -35,6 +35,7 @@ class Employee extends Model
 		'monto_808',
 		'memo',
 		'start_date',
+		'porcentages',
     ];
 
     public function emails()

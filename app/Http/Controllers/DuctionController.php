@@ -53,9 +53,17 @@ class DuctionController extends Controller
      * @param  \App\Duction  $duction
      * @return \Illuminate\Http\Response
      */
-    public function show(Duction $duction)
+    public function show($description)
     {
-        //
+        $duction = Duction::where('description',$description)->first();
+
+        if (!$duction) {
+            return abort(404);
+        }
+
+        return view('ductions.show',[
+            'duction'=>$duction,
+        ]);
     }
 
     /**
@@ -118,6 +126,7 @@ class DuctionController extends Controller
 
         $employee->update([
             'start_date'=>$request->input('start_date'),
+            'porcentages'=>isset($values[1]['import']) ? $values[1]['import'] : 1,
         ]);
 
         return redirect()->route('ductions.index')->with('success','Editado con Exito');
@@ -133,5 +142,75 @@ class DuctionController extends Controller
     public function destroy(Duction $duction)
     {
         //
+    }
+
+    public function massiveUpdate($id,Request $request)
+    {
+        $duction = Duction::where('id',$id)->first();
+
+        if (!$duction) {
+            return abort(404);
+        }
+
+        if ($duction->description == "802") {
+            
+            $request->validate([
+                'porcentaje'=>['required','numeric','max:100','min:1'],
+            ]);
+
+            Employee::whereHas('ductions',function($q){
+                        $q->where('description','802');
+                    })
+                    ->update([
+                        'porcentages'=>$request->input('porcentaje'),
+                    ]);
+
+        }
+
+        else{
+
+            $request->validate([
+                'import'=>['required','numeric'],
+            ]);
+
+            $employees = Employee::with('ductions')->whereHas('ductions',function($q) use ($duction){
+                        $q->where('description',$duction->description);
+                    })->get();
+
+            //dd($employees);
+
+            foreach ($employees as $employee) {
+                
+                $employee->ductions()->detach($duction->id);
+
+                $values[$duction->id] = ['import'=>$request->input('import')];
+                
+                $employee->ductions()->attach($values);
+            }
+
+
+        }
+
+        return redirect()->route('ductions.index');
+        
+    } 
+
+    public function changeDateEdit()
+    {
+        return view('ductions.editdate');
+    }
+
+    public function changeDateUpdate(Request $request)
+    {
+        $request->validate([
+            'date'=>'required|date',
+        ]);
+
+        Employee::where('id','>=',0)->update([
+            'start_date'=>$request->input('date'),
+        ]);
+
+        return redirect()->route('ductions.index');
+        
     }
 }

@@ -85,9 +85,17 @@ Route::group(['middleware' => ['auth']], function () {
             'destroy'=>'ductions.destroy',
         ]);
 
+    Route::post('administracion-de-deducciones/{id}/massiveUpdate','DuctionController@massiveUpdate')->name('ductions.massive.update');
+
+
+    Route::get('date/edit','DuctionController@changeDateEdit')->name('ductions.date.edit');
+
+
+    Route::post('administracion-de-deducciones/date/update','DuctionController@changeDateUpdate')->name('ductions.date.update');
+
     Route::post('empleados/descargas','EmployeeController@download')->name('employee.download');
 
-    Route::post('empleados/descargas/802','EmployeeController@download802')->name('employee.download.802');
+    Route::post('empleados/descargas/{duction}','EmployeeController@downloadDuction')->name('employee.download.duction');
 
     Route::get('download/excel/{file}',function(){
 

@@ -38,26 +38,53 @@
                 <div class="form-group ">
                    
                    @foreach($ductions as $duction)
-                   
-                     <div class="checkbox">
-                   
-                      <label>
-                   
-                        <input id="checkbox-{{ $duction->id }}" type="checkbox" name="ductions[]" class="required_group" value="{{$duction->id}}" >
-                        
-                        {{$duction->description}}
-                   
-                      </label>
-                      
-                      <div class="row">
-                        
-                        <div class="col-md-6">
-                          <input class="form-control" type="text" name="import[]" placeholder="importe {{ $duction->description }}" value="{{ is_null($employee->ductions->where('id',$duction->id)->first()) ? "" : $employee->ductions->where('id',$duction->id)->first()->pivot->import }}">
-                        </div>
+                    
+                    @if($duction->description == '802')
 
-                      </div>
+                       <div class="checkbox">
+                       
+                          <label>
+                       
+                            <input id="checkbox-{{ $duction->id }}" type="checkbox" name="ductions[]" class="required_group" value="{{$duction->id}}" >
+                            
+                            {{$duction->description}}
+                       
+                          </label>
+                          
+                          <div class="row">
+                            
+                            <div class="col-md-6">
+                              <input class="form-control" type="text" name="import[]" placeholder="Porcentaje" value="{{$employee->porcentages}}">
+                            </div>
+
+                          </div>
+                          
+                        </div>    
+                    
+                    @else
                       
-                    </div>                 
+                       <div class="checkbox">
+                   
+                          <label>
+                       
+                            <input id="checkbox-{{ $duction->id }}" type="checkbox" name="ductions[]" class="required_group" value="{{$duction->id}}" >
+                            
+                            {{$duction->description}}
+                       
+                          </label>
+                          
+                          <div class="row">
+                            
+                            <div class="col-md-6">
+                              <input class="form-control" type="text" name="import[]" placeholder="importe {{ $duction->description }}" value="{{ is_null($employee->ductions->where('id',$duction->id)->first()) ? "" : $employee->ductions->where('id',$duction->id)->first()->pivot->import }}">
+                            </div>
+
+                          </div>
+                          
+                        </div>    
+
+                    @endif
+             
                    
                    @endforeach
                     
